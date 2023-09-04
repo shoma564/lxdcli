@@ -3,8 +3,12 @@ FROM ubuntu/23.10
 
 RUN apt -y update
 RUN apt -y install docker.io docker-compose
+RUN apt -y install apache2 && systemctl start apache2 && curl localhost
+
 ADD ./docker-compose.yml /etc/
 RUN docker-compose -f /etc/docker-compose.yml up -d
 RUN docker ps
+
+PORT 192.168.219.40 80 80 proxy-lamp
 
 NUMBER 2

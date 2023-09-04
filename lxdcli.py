@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-import re
-import subprocess
-import sys
-import time
+import re, subprocess, sys, time, pylxd
 
 args = sys.argv
 
@@ -108,8 +105,10 @@ elif args[1] == "build":
     if u == 0:
         number = 0
 
+
+
     containername = ""  # Initialize containername
-    with open('./lxdfile', 'r') as file:
+    with open(args[2], 'r') as file:
         for line in file:
             time.sleep(1)
             match = re.match(r'(\S+)\s+(.*)', line)
@@ -146,21 +145,60 @@ elif args[1] == "build":
                         print(">>>>>>>> " + str(command) + "\n\n")
                         process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
                         print(process)
+                
+                elif first_word == "PORT":
+                    client = pylxd.Client()
+                    container_name = containername
+                    container = client.containers.get(container_name)
+                    eth0_ip = container.state().network['eth0']['addresses'][0]['address']
+
+                    words = line.split()
+                    print(words)
+                    if len(words) == 5:
+                        hostip = words[1]
+                        hostport = words[2]
+                        conport = words[3]
+                        proxyname = words[4]
+                        conip = eth0_ip
+
+                        if number == 0:
+                            command = "lxc config device add " + " " + str(containername) + " " + str(proxyname) + " proxy listen=tcp:" + str(hostip) + ":" + str(hostport) + " connect=tcp:" + str(conip) + ":" + str(conport)+ " bind=host"
+                            print(">>>>>>>> " + str(command) + "\n\n")
+                            process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
+                            print(process)
+                            p = 1
+                        
+                          
 
     number = int(number)
     if number > 0:
         for k in range(number):
-            command = "lxc copy " + str(containername) + " " + str(containername) + "-" + str(k)
+            j = k + 1
+            containername2 = str(containername) + "-" + str(k)
+            command = "lxc copy " + str(containername) + " " + str(containername2)
             print(">>>>>>>> " + str(command) + "\n\n")
             process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
             print(process)
 
-            command = "lxc start " + str(containername) + "-" + str(k)
+            command = "lxc start " + str(containername2)
             print(">>>>>>>> " + str(command) + "\n\n")
             process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
             print(process)
+
+            if p == 1:
+                hostport = int(hostport)
+                hostport = hostport + j
+                command = "lxc config device add " + " " + str(containername2) + " " + str(proxyname) + "-" + str(k) + " proxy listen=tcp:" + str(hostip) + ":" + str(hostport) + " connect=tcp:" + str(conip) + ":" + str(conport)+ " bind=host"
+                print(">>>>>>>> " + str(command) + "\n\n")
+                process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
+                print(process)
 
     time.sleep(3)
+
+
+
+
+
 
     command = "lxc list"
     process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
