@@ -93,7 +93,7 @@ elif args[1] == "build":
         sys.exit()
 
     u = 0
-    with open('./lxdfile', 'r') as file:
+    with open(args[2], 'r') as file:
         for line in file:
             match = re.match(r'(\S+)\s+(.*)', line)
             if match:

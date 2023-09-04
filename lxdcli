@@ -93,7 +93,7 @@ elif args[1] == "build":
         sys.exit()
 
     u = 0
-    with open('./lxdfile', 'r') as file:
+    with open(args[2], 'r') as file:
         for line in file:
             match = re.match(r'(\S+)\s+(.*)', line)
             if match:
@@ -187,14 +187,11 @@ elif args[1] == "build":
 
             if p == 1:
                 hostport = int(hostport)
-                k = int(k)
                 hostport = hostport + j
                 command = "lxc config device add " + " " + str(containername2) + " " + str(proxyname) + "-" + str(k) + " proxy listen=tcp:" + str(hostip) + ":" + str(hostport) + " connect=tcp:" + str(conip) + ":" + str(conport)+ " bind=host"
                 print(">>>>>>>> " + str(command) + "\n\n")
                 process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
                 print(process)
-
-
 
     time.sleep(3)
 
