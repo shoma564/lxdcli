@@ -1,0 +1,6 @@
+version: '3.3'
+services:
+    ubuntu:
+        container_name: ubuntu
+        image: 'shomaigu/ubuntu:latest'
+        tty: true

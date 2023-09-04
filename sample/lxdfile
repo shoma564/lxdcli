@@ -1,0 +1,10 @@
+CONTAINERNAME ubuntu-lamp
+FROM ubuntu/23.10
+
+RUN apt -y update
+RUN apt -y install docker.io docker-compose
+ADD ./docker-compose.yml /etc/
+RUN docker-compose -f /etc/docker-compose.yml up -d
+RUN docker ps
+
+NUMBER 2
