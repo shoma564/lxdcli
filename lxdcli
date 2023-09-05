@@ -3,6 +3,9 @@ import re, subprocess, sys, time, pylxd
 
 args = sys.argv
 
+p = 0
+
+
 if len(args) < 2:
     print("\nUsage: lxdcli COMMAND\n\n")
     print("Common Commands:")
@@ -161,14 +164,15 @@ elif args[1] == "build":
                         proxyname = words[4]
                         conip = eth0_ip
 
+                        command = "lxc config device add " + " " + str(containername) + " " + str(proxyname) + " proxy listen=tcp:" + str(hostip) + ":" + str(hostport) + " connect=tcp:" + str(conip) + ":" + str(conport)+ " bind=host"
+                        print(">>>>>>>> " + str(command) + "\n\n")
+                        process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
+                        print(process)
                         if number == 0:
-                            command = "lxc config device add " + " " + str(containername) + " " + str(proxyname) + " proxy listen=tcp:" + str(hostip) + ":" + str(hostport) + " connect=tcp:" + str(conip) + ":" + str(conport)+ " bind=host"
-                            print(">>>>>>>> " + str(command) + "\n\n")
-                            process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
-                            print(process)
+                            p = 0
+                        else:
                             p = 1
-                        
-                          
+
 
     number = int(number)
     if number > 0:

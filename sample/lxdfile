@@ -1,14 +1,15 @@
 CONTAINERNAME ubuntu-lamp
 FROM ubuntu/23.10
+NUMBER 2
+
+
+RUN timedatectl set-timezone Asia/Tokyo && hostnamectl set-hostname ubuntu-server
 
 RUN apt -y update
-RUN apt -y install docker.io docker-compose
-RUN apt -y install apache2 && systemctl start apache2 && curl localhost
+RUN apt -y install docker.io docker-compose openssh-server apache2
+RUN systemctl start apache2 && curl localhost
+RUN echo "PermitRootLogin  yes" | tee /etc/ssh/sshd_config
+RUN echo root:'password' | /usr/sbin/chpasswd
+RUN systemctl start ssh && systemctl enable ssh
 
-ADD ./docker-compose.yml /etc/
-RUN docker-compose -f /etc/docker-compose.yml up -d
-RUN docker ps
-
-PORT 192.168.219.40 80 80 proxy-lamp
-
-NUMBER 2
+PORT 192.168.219.40 80 80 proxy-lamp2
