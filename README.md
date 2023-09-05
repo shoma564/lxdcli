@@ -5,6 +5,15 @@
 ## 配置場所
 本コードはgithubにも配置している
 
+https://github.com/shoma564/lxdcli
+
+## インストール方法
+```
+git clone https://github.com/shoma564/lxdcli.git
+cd lxdcli
+cp lxdcli /usr/local/sbin/
+```
+
 
 ## 使い方
 lxdcliには3つの命令文がある。
@@ -103,7 +112,20 @@ root@shoma:/home/shoma/lxdcli/sample # lxdcli delete ubuntu-lamp 3
 
 
 ## LXDfileの書き方
-LXDfileには```CONTAINERNAME```が必須の命令文である。また、```CONTAINERNAME```と```FROM```は一番最初に配置しなければならない。
+命令文は以下の通り
+
+1. CONTAINERNAME：コンテナ名(必須)
+1. FROM : コンテナイメージ名(必須)
+1. RUN : コンテナ内で実行するコマンド
+1. ADD : コンテナにファイルを追加する
+1. NUMBER : コンテナ数
+1. PORT : コンテナのポートを外部に公開する(ホスト側のIP ホスト側のポート　コンテナポート　proxy名) 
+
+
+
+
+LXDfileには```CONTAINERNAME```が必須の命令文である。また、```CONTAINERNAME```は```FROM```の前に記述をしなければならない。また、```NUMBER```は必須項目ではないが、書く場合は```PORT```の前に配置する必要がある。
+
 
 例
 ```bash
@@ -117,4 +139,5 @@ RUN docker-compose -f /etc/docker-compose.yml up -d
 RUN docker ps
 
 NUMBER 2
+PORT PORT 192.168.219.40 80 80 proxy-lamp
 ```
