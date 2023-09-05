@@ -4,7 +4,7 @@ import re, subprocess, sys, time, pylxd
 args = sys.argv
 
 p = 0
-
+number = 0
 
 if len(args) < 2:
     print("\nUsage: lxdcli COMMAND\n\n")
@@ -122,6 +122,7 @@ elif args[1] == "build":
                     containername = remaining_words
                 elif first_word == "NUMBER":
                     number = remaining_words
+
                 elif first_word == "FROM":
                     command = "lxc launch images:" + str(remaining_words) + " " + str(containername)
                     command2 = "lxc start " + str(containername)
@@ -192,7 +193,18 @@ elif args[1] == "build":
             if p == 1:
                 hostport = int(hostport)
                 hostport = hostport + j
+                print(hostport)
+                command = "lxc config device remove " + str(containername2) + " " +str(proxyname)
+                print(">>>>>>>> " + str(command) + "\n\n")
+                process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
+                print(process)
+                
                 command = "lxc config device add " + " " + str(containername2) + " " + str(proxyname) + "-" + str(k) + " proxy listen=tcp:" + str(hostip) + ":" + str(hostport) + " connect=tcp:" + str(conip) + ":" + str(conport)+ " bind=host"
+                print(">>>>>>>> " + str(command) + "\n\n")
+                process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
+                print(process)
+
+                command = "lxc start " + str(containername2)
                 print(">>>>>>>> " + str(command) + "\n\n")
                 process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
                 print(process)

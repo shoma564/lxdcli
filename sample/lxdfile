@@ -1,7 +1,5 @@
 CONTAINERNAME ubuntu-lamp
 FROM ubuntu/23.10
-NUMBER 2
-
 
 RUN timedatectl set-timezone Asia/Tokyo && hostnamectl set-hostname ubuntu-server
 
@@ -12,4 +10,6 @@ RUN echo "PermitRootLogin  yes" | tee /etc/ssh/sshd_config
 RUN echo root:'password' | /usr/sbin/chpasswd
 RUN systemctl start ssh && systemctl enable ssh
 
+
+NUMBER 5
 PORT 192.168.219.40 80 80 proxy-lamp2
