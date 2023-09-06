@@ -137,7 +137,7 @@ elif args[1] == "build":
                     time.sleep(1)
 
                 elif first_word == "RUN":
-                    command = "lxc exec " + str(containername) + " -- " + str(remaining_words)
+                    command = "lxc exec " + str(containername) + " -- bash -c \"" + str(remaining_words) + "\""
                     print(">>>>>>>> " + str(command) + "\n\n")
                     process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
                     print(process)

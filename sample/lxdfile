@@ -11,5 +11,5 @@ RUN echo root:'password' | /usr/sbin/chpasswd
 RUN systemctl start ssh && systemctl enable ssh
 
 
-NUMBER 5
+#NUMBER 5
 PORT 192.168.219.40 80 80 proxy-lamp2
