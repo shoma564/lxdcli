@@ -12,8 +12,21 @@ if len(args) < 2:
     print("  build    build a lxdfile")
     print("  copy     copy containers")
     print("  delete   delete containers")
+    print("  reset    delete all containers")
     print("\n\n\n")
     sys.exit()
+
+
+if args[1] == "reset":
+    command = "lxc delete --force $(lxc list --format csv -c \"n\")" 
+    print(">>>>>>>> " + str(command) + "\n\n")
+    process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
+    print(process)
+    command = "lxc image delete $(lxc image list --format csv -c \"l\")"
+    print(">>>>>>>> " + str(command) + "\n\n")
+    process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
+    print(process)
+
 
 if args[1] == "delete":
     if len(args) < 3:
@@ -151,6 +164,15 @@ elif args[1] == "build":
                         print(">>>>>>>> " + str(command) + "\n\n")
                         process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
                         print(process)
+                
+                elif first_word == "ADDR":
+                    words = line.split()
+                    if words:
+                        command = "lxc file pull " + str(containername) + "/" + words[2] + " " + words[1]
+                        print(">>>>>>>> " + str(command) + "\n\n")
+                        process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
+                        print(process)
+
                 
                 elif first_word == "PORT":
                     client = pylxd.Client()
