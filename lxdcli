@@ -152,7 +152,7 @@ elif args[1] == "build":
                 elif first_word == "RUN":
                     remaining_words = remaining_words.replace('"', '\\"')
 
-                    command = "lxc exec " + str(containername) + " -- bash -c \"" + str(remaining_words) + "\" && echo \"done\""
+                    command = "lxc exec " + str(containername) + " -- bash -c \"" + str(remaining_words) + " && echo \"done\"\""
                     print(">>>>>>>> " + str(command) + "\n\n")
                     process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
                     print(process)
