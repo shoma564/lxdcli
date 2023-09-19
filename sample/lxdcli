@@ -81,7 +81,7 @@ if args[1] == "copy":
             process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
             print(process)
 
-            time.sleep(3)
+            time.sleep(5)
 
         command = "lxc list"
         process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
