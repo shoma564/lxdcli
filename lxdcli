@@ -72,6 +72,10 @@ if args[1] == "copy":
     number = int(number)
     if number > 0:
         for k in range(number):
+            command = "lxc stop " + str(containername)
+            print(">>>>>>>> " + str(command) + "\n\n")
+            process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
+            print(process)
             command = "lxc copy " + str(containername) + " " + str(containername) + "-" + str(k)
             print(">>>>>>>> " + str(command) + "\n\n")
             process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
@@ -81,8 +85,12 @@ if args[1] == "copy":
             process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
             print(process)
 
-            time.sleep(5)
+            time.sleep(2)
 
+        command = "lxc start " + str(containername)
+        print(">>>>>>>> " + str(command) + "\n\n")
+        process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
+        print(process)
         command = "lxc list"
         process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
         print(process)
@@ -204,6 +212,12 @@ elif args[1] == "build":
         for k in range(number):
             j = k + 1
             containername2 = str(containername) + "-" + str(k)
+
+            command = "lxc stop " + str(containername)
+            print(">>>>>>>> " + str(command) + "\n\n")
+            process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
+            print(process)
+
             command = "lxc copy " + str(containername) + " " + str(containername2)
             print(">>>>>>>> " + str(command) + "\n\n")
             process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
@@ -233,11 +247,12 @@ elif args[1] == "build":
                 process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
                 print(process)
 
-    time.sleep(3)
+            time.sleep(2)
 
-
-
-
+        command = "lxc start " + str(containername)
+        print(">>>>>>>> " + str(command) + "\n\n")
+        process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
+        print(process)
 
 
     command = "lxc list"
