@@ -249,7 +249,7 @@ elif args[1] == "build":
                     number = remaining_words
 
                 elif first_word == "FROM":
-                    command = "lxc launch images:" + str(remaining_words) + " " + str(containername)
+                    command = "lxc launch " + str(remaining_words) + " " + str(containername)
                     command2 = "lxc start " + str(containername)
                     print(">>>>>>>> " + str(command) + "\n\n")
                     process = (subprocess.Popen(command, stdout=subprocess.PIPE, shell=True).communicate()[0]).decode('utf-8')
